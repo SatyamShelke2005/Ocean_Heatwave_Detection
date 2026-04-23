@@ -4,13 +4,6 @@
 This project implements an AI-based system to detect and predict marine heatwaves using oceanographic and environmental data. The model is built from scratch using the Delta Rule (Widrow-Hoff Learning Algorithm), a supervised learning approach that updates weights using gradient-based optimization.
 
 ---
-## 🏆 Leaderboard
-
-| Name | Accuracy |
-|------|----------|
-
-👉 [View Full Leaderboard](./leaderboard.csv)
----
 ## 🏆 Ocean Heatwave Challenge Leaderboard
 
 🚀 Track live model performance here:

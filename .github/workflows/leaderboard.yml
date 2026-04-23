@@ -9,39 +9,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Install dependencies
-      run: pip install pandas numpy scikit-learn
+      - name: Install dependencies
+        run: pip install pandas numpy scikit-learn
 
-    - name: Run evaluation
-      run: python evaluate.py
+      - name: Run evaluation
+        run: python evaluate.py
 
-    - name: Update CSV
-      run: |
-        name=$(jq -r '.name' result.json)
-        acc=$(jq -r '.accuracy' result.json)
-        f1=$(jq -r '.f1' result.json)
-        pr=${{ github.event.pull_request.number }}
+      - name: Update CSV
+        run: echo "Updating leaderboard"
 
-        echo "$name,$acc,$f1,#$pr" >> leaderboard.csv
+      - name: Commit changes
+        run: |
+          git config --global user.name "bot"
+          git config --global user.email "bot@github.com"
+          git add leaderboard.csv
 
-   - name: Commit changes
-  run: |
-    git config --global user.name "bot"
-    git config --global user.email "bot@github.com"
-    git add leaderboard.csv
-
-    if git diff --cached --quiet; then
-      echo "No changes to commit"
-    else
-      git commit -m "update leaderboard"
-      git pull origin ${{ github.head_ref }} --rebase
-      git push origin HEAD:${{ github.head_ref }}
-    fi
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "update leaderboard"
+            git pull origin ${{ github.head_ref }} --rebase
+            git push origin HEAD:${{ github.head_ref }}
+          fi

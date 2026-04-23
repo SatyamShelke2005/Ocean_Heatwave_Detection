@@ -1,3 +1,5 @@
+import glob
+import importlib.util
 import os
 import json
 import numpy as np
@@ -11,6 +13,19 @@ username = os.getenv("GITHUB_ACTOR", "unknown")
 
 # Step 2: load dataset
 df = pd.read_csv("Data/data.csv")
+files = glob.glob("submissions/*.py")
+
+if len(files) == 0:
+    raise Exception("No submission file found")
+
+submission_file = files[0]
+
+spec = importlib.util.spec_from_file_location("model", submission_file)
+model_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(model_module)
+
+if not hasattr(model_module, "predict"):
+    raise Exception("File must contain predict() function")
 
 # Step 3: preprocessing
 df = df.drop(columns=['Date', 'Latitude', 'Longitude'])
@@ -63,17 +78,13 @@ class DeltaRule:
             grad = X.T @ (error * yhat * (1 - yhat))
             self.W += self.lr * grad / len(X)
 
-# Step 7: train model
-model = DeltaRule(X_train.shape[1])
-model.train(X_train, y_train)
+# Step 7 Train and Evaluate
 
-# Step 8: evaluate
-y_pred = model.predict(X_test)
-
+y_pred = model_module.predict(X_train, y_train, X_test)
 accuracy = round(accuracy_score(y_test, y_pred), 3)
 f1 = round(f1_score(y_test, y_pred), 3)
 
-# Step 9: save result
+# Step 8: save result
 result = {
     "name": username,
     "accuracy": accuracy,

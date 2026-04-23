@@ -18,7 +18,7 @@ jobs:
         python-version: 3.10
 
     - name: Install dependencies
-      run: pip install numpy scikit-learn
+      run: pip install pandas numpy scikit-learn
 
     - name: Run evaluation
       run: python evaluate.py

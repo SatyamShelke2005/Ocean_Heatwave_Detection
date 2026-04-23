@@ -100,3 +100,17 @@ result = {
 
 with open("result.json", "w") as f:
     json.dump(result, f)
+# Step 9: update leaderboard.csv
+import csv
+import os
+
+file_exists = os.path.isfile("leaderboard.csv")
+
+with open("leaderboard.csv", "a", newline="") as csvfile:
+    writer = csv.writer(csvfile)
+
+    # write header only if file is new
+    if not file_exists:
+        writer.writerow(["Name", "Accuracy", "F1 Score"])
+
+    writer.writerow([username, accuracy, f1])

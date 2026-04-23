@@ -38,4 +38,4 @@ jobs:
         git config --global user.email "bot@github.com"
         git add leaderboard.csv
         git commit -m "update leaderboard" || echo "no change"
-        git push
+        git push origin HEAD:${{ github.head_ref }}

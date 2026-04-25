@@ -4,57 +4,84 @@
   <title>Ocean Heatwave Leaderboard</title>
 
   <style>
-    body {
-      font-family: Arial;
-      background: #f5f7fa;
-      padding: 20px;
-      text-align: center;
-    }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 20px;
+    text-align: center;
+    color: #333;
+  }
 
-    h1 { margin-bottom: 30px; }
+  h1 {
+    color: white;
+    margin-bottom: 40px;
+  }
 
-    /* TOP 3 CARDS */
-    .top3 {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 40px;
-    }
+  /* TOP CARD */
+  .top3 {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 50px;
+  }
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      width: 200px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+  .card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    width: 220px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+  }
 
-    .gold { border-top: 5px solid gold; }
-    .silver { border-top: 5px solid silver; }
-    .bronze { border-top: 5px solid #cd7f32; }
+  .card:hover {
+    transform: translateY(-8px);
+  }
 
-    .card h2 { margin: 10px 0; }
+  .gold {
+    border-top: 6px solid gold;
+    transform: scale(1.1);
+  }
 
-    /* TABLE */
-    table {
-      width: 80%;
-      margin: auto;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-    }
+  .silver { border-top: 6px solid silver; }
+  .bronze { border-top: 6px solid #cd7f32; }
 
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
-    }
+  .card h3 {
+    margin: 10px 0;
+  }
 
-    th {
-      background: #eee;
-    }
+  /* TABLE */
+  table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
 
-  </style>
+  th {
+    background: #667eea;
+    color: white;
+    padding: 12px;
+  }
+
+  td {
+    padding: 12px;
+  }
+
+  tr:nth-child(even) {
+    background: #f2f2f2;
+  }
+
+  tr:hover {
+    background: #e0e7ff;
+  }
+
+</style>
 </head>
 
 <body>

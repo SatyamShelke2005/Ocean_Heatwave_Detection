@@ -37,35 +37,58 @@
 
 <script>
 fetch('leaderboard.csv')
-.then(res=>res.text())
-.then(data=>{
-  let rows = data.split('\n').slice(1).filter(r=>r.trim()!="");
+  .then(res => res.text())
+  .then(data => {
 
-  let parsed = rows.map(r=>{
-    let [name,acc,f1,pr]=r.split(',');
-    return {name, acc:+acc, f1:+f1, pr};
+    let rows = data.trim().split('\n').slice(1).filter(r => r.trim() !== "");
+
+    let parsed = [];
+
+    rows.forEach(r => {
+      let cols = r.split(',');
+
+      if (cols.length < 3) return; // safety check
+
+      let name = cols[0];
+      let acc = parseFloat(cols[1]) || 0;
+      let f1 = parseFloat(cols[2]) || 0;
+      let pr = cols[3] || "0.00"; // optional
+
+      parsed.push({ name, acc, f1, pr });
+    });
+
+    if (parsed.length === 0) {
+      document.body.innerHTML += "<h2 style='text-align:center;'>No data found</h2>";
+      return;
+    }
+
+    parsed.sort((a,b) => b.f1 - a.f1);
+
+    document.getElementById("teams").innerHTML = "<h2>"+parsed.length+"</h2>Teams";
+    document.getElementById("best").innerHTML = "<h2>"+parsed[0].f1.toFixed(3)+"</h2>Best F1";
+
+    let avg = parsed.reduce((s,x)=>s+x.f1,0)/parsed.length;
+    document.getElementById("avg").innerHTML = "<h2>"+avg.toFixed(3)+"</h2>Avg F1";
+
+    let table = document.getElementById("table");
+
+    parsed.forEach((r,i)=>{
+      let tr = table.insertRow();
+
+      let rank = i==0?"🥇":i==1?"🥈":i==2?"🥉":i+1;
+
+      tr.insertCell(0).innerText = rank;
+      tr.insertCell(1).innerText = r.name;
+      tr.insertCell(2).innerText = r.f1.toFixed(3);
+      tr.insertCell(3).innerText = r.acc.toFixed(3);
+      tr.insertCell(4).innerText = r.pr;
+    });
+
+  })
+  .catch(err => {
+    document.body.innerHTML += "<h2 style='color:red;text-align:center;'>Error loading leaderboard</h2>";
+    console.error(err);
   });
-
-  parsed.sort((a,b)=>b.f1-a.f1);
-
-  document.getElementById("teams").innerHTML = "<h2>"+parsed.length+"</h2>Teams";
-  document.getElementById("best").innerHTML = "<h2>"+parsed[0].f1+"</h2>Best F1";
-  document.getElementById("avg").innerHTML = "<h2>"+(parsed.reduce((s,x)=>s+x.f1,0)/parsed.length).toFixed(3)+"</h2>Avg F1";
-
-  let table=document.getElementById("table");
-
-  parsed.forEach((r,i)=>{
-    let tr=table.insertRow();
-
-    let rank = i==0?"🥇":i==1?"🥈":i==2?"🥉":i+1;
-
-    tr.insertCell(0).innerText=rank;
-    tr.insertCell(1).innerText=r.name;
-    tr.insertCell(2).innerText=r.f1;
-    tr.insertCell(3).innerText=r.acc;
-    tr.insertCell(4).innerHTML="<a href='#'>"+r.pr+"</a>";
-  });
-});
 </script>
 
 </body>

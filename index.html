@@ -4,108 +4,137 @@
   <title>Ocean Heatwave Leaderboard</title>
 
   <style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to bottom, #38bdf8, #0ea5e9, #0369a1);
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    color: white;
-  }
-  
-  h1 {
-    color: white;
-    margin-bottom: 40px;
-  }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(60deg, #543ab7, #00acc1);
+      color: white;
+      text-align: center;
+    }
 
-  /* TOP CARD */
-  .top3 {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-bottom: 25px;
-  }
+    .header {
+      position: relative;
+      padding-bottom: 80px;
+    }
 
-  .card {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 20px;
-    width: 260px;   /* increased */
-    margin: auto;
-    text-align: center;
-    color: white;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  }
+    .inner-header {
+      padding: 50px 20px;
+    }
 
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  }
+    h1 {
+      margin-bottom: 30px;
+    }
 
-  .gold {
-    border-top: 5px solid #facc15;
-    transform: scale(1.12);
-  }
+    /* Leaderboard box */
+    .leaderboard-container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
 
-  .silver {
-    border-top: 5px solid #94a3b8;
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-  .bronze {
-    border-top: 5px solid #b45309;
-  }
-    
-  .card h3 {
-    margin: 10px 0;
-  }
+    th {
+      padding: 12px;
+      background: rgba(255,255,255,0.2);
+    }
 
-  /* TABLE */
-  table {
-    width: 80%;
-    margin: auto;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-  }
+    td {
+      padding: 12px;
+      color: white;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
 
-  th {
-    background: #6366f1;
-    color: white;
-    padding: 12px;
-  }
+    tr:nth-child(even) {
+      background: rgba(255,255,255,0.05);
+    }
 
-  td {
-    padding: 12px;
-    color: #1e293b;   /* 👈 IMPORTANT FIX */
-    font-weight: 500;
-  }
+    /* Waves */
+    .waves {
+      position: relative;
+      width: 100%;
+      height: 15vh;
+      margin-bottom: -7px;
+      min-height: 100px;
+      max-height: 150px;
+    }
 
-  tr:nth-child(even) {
-    background: #f1f5f9;
-  }
+    .parallax > use {
+      animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+    }
 
-</style>
+    .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+    .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+    .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+    .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+
+    @keyframes move-forever {
+      0% { transform: translate3d(-90px,0,0); }
+      100% { transform: translate3d(85px,0,0); }
+    }
+
+    @media (max-width: 768px) {
+      .waves { height: 40px; min-height: 40px; }
+    }
+  </style>
 </head>
 
 <body>
 
-<h1> 🌊 Ocean Heatwave Detection </h1>
+<div class="header">
 
-<div class="top3" id="top3"></div>
+  <div class="inner-header">
+    <h1>🌊 Ocean Heatwave Leaderboard</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Rank</th>
-      <th>Name</th>
-      <th>F1 Score</th>
-      <th>Accuracy</th>
-    </tr>
-  </thead>
-  <tbody id="table"></tbody>
-</table>
+    <div class="leaderboard-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>User</th>
+            <th>Accuracy</th>
+            <th>F1 Score</th>
+          </tr>
+        </thead>
+        <tbody id="table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Waves -->
+  <div>
+    <svg class="waves" xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 24 150 28" preserveAspectRatio="none">
+
+      <defs>
+        <path id="gentle-wave"
+          d="M-160 44c30 0 58-18 88-18s58 18 88 18
+             58-18 88-18 58 18 88 18 v44h-352z" />
+      </defs>
+
+      <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0"
+          fill="rgba(255,255,255,0.7)" />
+        <use xlink:href="#gentle-wave" x="48" y="3"
+          fill="rgba(255,255,255,0.5)" />
+        <use xlink:href="#gentle-wave" x="48" y="5"
+          fill="rgba(255,255,255,0.3)" />
+        <use xlink:href="#gentle-wave" x="48" y="7"
+          fill="#ffffff" />
+      </g>
+
+    </svg>
+  </div>
+
+</div>
 
 <script>
 fetch('leaderboard.csv')
@@ -116,7 +145,6 @@ fetch('leaderboard.csv')
 
   let parsed = rows.map(r => {
     let [name, acc, f1] = r.split(',');
-
     return {
       name,
       acc: parseFloat(acc),
@@ -124,34 +152,8 @@ fetch('leaderboard.csv')
     };
   });
 
-  if(parsed.length === 0) {
-    document.body.innerHTML += "<h2>No data found</h2>";
-    return;
-  }
-
-  // Sort by F1
   parsed.sort((a,b) => b.f1 - a.f1);
 
-  // TOP 3 CARDS
-  const topDiv = document.getElementById("top3");
-
-  const medals = ["🥇","🥈","🥉"];
-  const classes = ["gold","silver","bronze"];
-
-  for(let i=0;i<3 && i<parsed.length;i++){
-    let p = parsed[i];
-
-    topDiv.innerHTML += `
-      <div class="card ${classes[i]}">
-        <h2>${medals[i]}</h2>
-        <h3>${p.name}</h3>
-        <p>F1: ${p.f1.toFixed(3)}</p>
-        <p>Acc: ${p.acc.toFixed(3)}</p>
-      </div>
-    `;
-  }
-
-  // TABLE
   const table = document.getElementById("table");
 
   parsed.forEach((p,i)=>{
@@ -159,8 +161,8 @@ fetch('leaderboard.csv')
       <tr>
         <td>${i+1}</td>
         <td>${p.name}</td>
-        <td>${p.f1.toFixed(3)}</td>
         <td>${p.acc.toFixed(3)}</td>
+        <td>${p.f1.toFixed(3)}</td>
       </tr>
     `;
     table.innerHTML += row;

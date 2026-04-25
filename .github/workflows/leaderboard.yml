@@ -33,13 +33,13 @@ jobs:
           acc=$(jq -r '.accuracy' result.json)
           f1=$(jq -r '.f1' result.json)
 
-          # Remove existing entry of same user
-          grep -v "^$name," leaderboard.csv > temp.csv || true
+          # Remove header + remove existing user
+          tail -n +2 leaderboard.csv | grep -v "^$name," > temp.csv || true
 
-          # Add updated entry
+          # Add updated row
           echo "$name,$acc,$f1" >> temp.csv
 
-          # Restore header
+          # Write fresh CSV with single header
           echo "Name,Accuracy,F1" > leaderboard.csv
           cat temp.csv >> leaderboard.csv
 

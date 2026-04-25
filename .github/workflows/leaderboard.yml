@@ -1,10 +1,12 @@
 name: Update Leaderboard
+
 permissions:
   contents: write
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -26,19 +28,18 @@ jobs:
         run: python evaluate.py
 
       - name: Update CSV
-        run: echo "Updating leaderboard"
+        run: |
+          name=$(jq -r '.name' result.json)
+          acc=$(jq -r '.accuracy' result.json)
+          f1=$(jq -r '.f1' result.json)
+
+          echo "$name,$acc,$f1" >> leaderboard.csv
 
       - name: Commit changes
         run: |
           git config --global user.name "bot"
           git config --global user.email "bot@github.com"
 
-          echo "Checking leaderboard.csv content:"
-          cat leaderboard.csv
-
           git add leaderboard.csv
-
           git commit -m "update leaderboard" || echo "No changes"
-          git pull origin test-branch --rebase || echo "Pull skipped"
-          git push origin test-branch
-
+          git push
